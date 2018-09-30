@@ -1,0 +1,8 @@
+db_host_master: master
+db_host_replica: slave
+db_port_master: 5432
+db_port_replica: 5432
+db_user: dbuser
+db_password: S3cr37
+db_name: template1
+max_lag_before_exit: 60
