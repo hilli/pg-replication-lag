@@ -9,7 +9,7 @@ BINARY_LINUX=$(BINARY_NAME)_linux_amd64
     
 all: test build
 build:
-	$(GOBUILD) -o $(BINARY_NAME) -v github.com/hilli/$(BINARY_NAME)
+	$(GOBUILD) -o $(BINARY_NAME) -v
 
 test: 
 	$(GOTEST) -v ./...
@@ -26,7 +26,6 @@ run:
 deps:
 	${GOGET} "gopkg.in/yaml.v2"
 
-
 # Connect to test postgresql servers and expose pg ports on localhost
 test-setup:	
 	# Master
@@ -36,6 +35,6 @@ test-setup:
     
 # Cross compilation
 build-linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_LINUX) -v github.com/hilli/$(BINARY_NAME)
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_LINUX) -v
 # docker-build:
-# 	docker run --rm -it -v "$(GOPATH)":/go -w /go golang:latest go build -o "$(BINARY_LINUX)" -v "github.com/hilli/pg-replication-lag/$(BINARY_LINUX)"
+# 	docker run --rm -it -v "$(GOPATH)":/go -w /go golang:latest go build -o "$(BINARY_LINUX)" -v

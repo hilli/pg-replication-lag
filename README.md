@@ -1,7 +1,31 @@
 # pg-replication-lag
 
-### Getting started
-Copy `pg-replication-lag.yaml.sample` to `pg-replication-lag.yaml`. Fill out `pg-replication-lag.yaml` with some sane values. Run `./pg-replication-lag` or use on of the flags as well:
+A command to let you get the _timed_ lag between a PostgreSQL master/slave replica set. PostgreSQL has queries to let you get the bytes difference between the master and the replica - This will let you get the amout of time there is between the masters writes and the replica has save the data to disk.
+
+## Installation
+
+```
+go get github.com/hilli/pg-replication-lag
+```
+
+Or checkout the source and do a `build` (for your current platform) or optionally `make build-linux` (to get a Linux binary):
+
+```
+git clone https://github.com/hilli/pg-replication-lag.git
+make deps
+make build
+```
+
+## Getting started
+Copy `pg-replication-lag.yaml.sample` to `pg-replication-lag.yaml`. 
+
+```
+curl https://raw.githubusercontent.com/hilli/pg-replication-lag/master/pg-replication-lag.yaml.sample > pg-replication-lag.yaml
+```
+
+Fill out `pg-replication-lag.yaml` with some sane values. The values should be self explanatory but it is probably worth noting that, since it is a replica, the username and password is the same. `max_lag_before_exit` is the time to maximal wait before exiting - If your replication is broken, we won't wait forever.
+
+ Run `./pg-replication-lag` or use on of the flags as well:
 
 ```
 $ ./pg-replication-lag --help
