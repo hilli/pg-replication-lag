@@ -59,6 +59,7 @@ func init() {
 }
 
 func main() {
+	var initialBytesBehind int64
 
 	dbMasterInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=require",
 		c.DbHostMaster, c.DbPortMaster, c.DbUser, c.DbPassword, c.DbName)
@@ -75,11 +76,15 @@ func main() {
 	masterXlog := getXlogLocation(masterDb, XlogCurrentLocation)
 	startTime := time.Now()
 
-	replicaXlog := ""
 	done := false
+	firstRun := true
 	for ok := true; ok; ok = (done != true) {
-		replicaXlog = getXlogLocation(replicationDb, XlogReplicaReplayLocation)
+		replicaXlog := getXlogLocation(replicationDb, XlogReplicaReplayLocation)
 		xlogDiffBytes := getXlogDiff(replicationDb, masterXlog, replicaXlog)
+		if firstRun {
+			initialBytesBehind = xlogDiffBytes
+			firstRun = false
+		}
 		if verbose {
 			logger.Println(fmt.Sprintf("Running %v behind, missing %v bytes", time.Since(startTime), xlogDiffBytes))
 		}
@@ -93,7 +98,7 @@ func main() {
 			time.Sleep(100 * time.Millisecond)
 		} else {
 			// Report time
-			fmt.Println(fmt.Sprintf("{ \"postgresql-replication-lag\": { \"time\": \"%s\", \"bytes\": \"%v\" } }", time.Now().Sub(startTime), xlogDiffBytes))
+			fmt.Println(fmt.Sprintf("{ \"postgresql-replication-lag\": { \"time\": \"%s\", \"bytes\": \"%v\" } }", time.Now().Sub(startTime), initialBytesBehind))
 			done = true
 		}
 	}
