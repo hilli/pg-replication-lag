@@ -53,6 +53,11 @@ func init() {
 	logger = log.New(os.Stderr, "pg-replication-lag: ", log.LstdFlags)
 	flag.BoolVar(&verbose, "verbose", false, "Add verbosity to the output")
 	flag.StringVar(&configFile, "config", "./pg-replication-lag.yaml", "Path to YAML config file")
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+		flag.PrintDefaults()
+		fmt.Fprintf(os.Stderr, "\nDocumentation at https://github.com/hilli/pg-replication-lag\n")
+	}
 	flag.Parse()
 	c.loadConfigFile(configFile)
 

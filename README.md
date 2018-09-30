@@ -34,6 +34,8 @@ Usage of ./pg-replication-lag:
     	Path to YAML config file (default "./pg-replication-lag.yaml")
   -verbose
     	Add verbosity to the output
+
+Documentation at https://github.com/hilli/pg-replication-lag
 ```
 
 It will look in the _current_ directory for a config file. If thats not where you keep it, specify it with `-config` flag.
